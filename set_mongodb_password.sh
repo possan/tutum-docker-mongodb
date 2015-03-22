@@ -24,11 +24,15 @@ done
 sleep 5
 
 echo "=> Creating an admin user with a ${_word} password in MongoDB"
-mongo admin --eval "db.addUser({ user: 'admin', pwd: '$ADMINPASS', roles: [ { role: 'root', db: 'admin' }, { role: 'userAdminAnyDatabase', db: 'admin }, { role: 'dbAdminAnyDatabase', db: 'admin' } ] });"
+CMD="db.addUser({ user: 'admin', pwd: '$ADMINPASS', roles: [ { role: 'root', db: 'admin' }, { role: 'userAdminAnyDatabase', db: 'admin' }, { role: 'dbAdminAnyDatabase', db: 'admin' } ] });"
+echo "$CMD"
+mongo admin --eval $CMD
 sleep 5
 
 echo "=> Creating an regular user with a ${_word2} password in MongoDB"
-mongo admin --eval "db.addUser({ user: 'user', pwd: '$USERPASS', roles: [ { role: 'readWriteAnyDatabase', db: 'admin' } ] });"
+CMD="db.addUser({ user: 'user', pwd: '$USERPASS', roles: [ { role: 'readWriteAnyDatabase', db: 'admin' } ] });"
+echo "$CMD"
+mongo admin --eval $CMD
 sleep 5
 
 mongo admin --eval "db.shutdownServer();"
