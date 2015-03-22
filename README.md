@@ -1,5 +1,5 @@
-tutum-docker-mongodb
-====================
+Modified tutum-docker-mongodb
+=============================
 
 Base docker image to run a MongoDB database server
 
@@ -40,6 +40,16 @@ You can then connect to MongoDB:
          mongo admin -u admin -p 5elsT6KtjrqV
 
 Done!
+
+
+Environment variables
+---------------------
+
+`MONGODB_ADMIN_PASS` - Password for `admin` account
+
+`MONGODB_USER_PASS` - Password for `user` account
+
+`MONGODB_EXTRA_PARAMS` - Extra arguments passed to the `mongod` executable (a good place for --replSet for example)
 
 
 Setting a specific password for the admin account
