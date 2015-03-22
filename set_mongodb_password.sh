@@ -7,8 +7,11 @@ fi
 
 /usr/bin/mongod --smallfiles --nojournal &
 
-PASS=${MONGODB_PASS:-$(pwgen -s 12 1)}
-_word=$( [ ${MONGODB_PASS} ] && echo "preset" || echo "random" )
+ADMINPASS=${MONGODB_ADMIN_PASS:-$(pwgen -s 12 1)}
+USERPASS=${MONGODB_USER_PASS:-$(pwgen -s 12 1)}
+
+_word=$( [ ${MONGODB_ADMIN_PASS} ] && echo "preset" || echo "random" )
+_word2=$( [ ${MONGODB_USER_PASS} ] && echo "preset" || echo "random" )
 
 RET=1
 while [[ RET -ne 0 ]]; do
@@ -19,7 +22,11 @@ while [[ RET -ne 0 ]]; do
 done
 
 echo "=> Creating an admin user with a ${_word} password in MongoDB"
-mongo admin --eval "db.addUser({user: 'admin', pwd: '$PASS', roles: [ { role: 'root', db: 'admin' }, { role: 'userAdminAnyDatabase', db: 'admin }, { role: 'dbAdminAnyDatabase', db: 'admin' } ]});"
+mongo admin --eval "db.addUser({user: 'admin', pwd: '$ADMINPASS', roles: [ { role: 'root', db: 'admin' }, { role: 'userAdminAnyDatabase', db: 'admin }, { role: 'dbAdminAnyDatabase', db: 'admin' } ]});"
+
+echo "=> Creating an regular user with a ${_word2} password in MongoDB"
+mongo admin --eval "db.addUser({user: 'user', pwd: '$USERPASS', roles: [ { role: 'readWriteAnyDatabase', db: 'admin' } ]});"
+
 mongo admin --eval "db.shutdownServer();"
 
 echo "=> Done!"
