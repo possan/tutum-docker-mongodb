@@ -22,10 +22,10 @@ while [[ RET -ne 0 ]]; do
 done
 
 echo "=> Creating an admin user with a ${_word} password in MongoDB"
-mongo admin --eval "db.addUser({user: 'admin', pwd: '$ADMINPASS', roles: [ { role: 'root', db: 'admin' }, { role: 'userAdminAnyDatabase', db: 'admin }, { role: 'dbAdminAnyDatabase', db: 'admin' } ]});"
+mongo admin --eval "db.addUser({ user: 'admin', pwd: '$ADMINPASS', roles: [ { role: 'root', db: 'admin' }, { role: 'userAdminAnyDatabase', db: 'admin }, { role: 'dbAdminAnyDatabase', db: 'admin' } ] });"
 
 echo "=> Creating an regular user with a ${_word2} password in MongoDB"
-mongo admin --eval "db.addUser({user: 'user', pwd: '$USERPASS', roles: [ { role: 'readWriteAnyDatabase', db: 'admin' } ]});"
+mongo admin --eval "db.addUser({ user: 'user', pwd: '$USERPASS', roles: [ { role: 'readWriteAnyDatabase', db: 'admin' } ] });"
 
 mongo admin --eval "db.shutdownServer();"
 
@@ -35,7 +35,11 @@ touch /.mongodb_password_set
 echo "========================================================================"
 echo "You can now connect to this MongoDB server using:"
 echo ""
-echo "    mongo admin -u admin -p $PASS --host <host> --port <port>"
+echo "    mongo admin -u admin -p $ADMINPASS --host <host> --port <port>"
+echo ""
+echo "or"
+echo ""
+echo "    mongo admin -u user -p $USERPASS --host <host> --port <port>"
 echo ""
 echo "Please remember to change the above password as soon as possible!"
 echo "========================================================================"
