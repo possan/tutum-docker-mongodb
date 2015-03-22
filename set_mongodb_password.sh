@@ -21,13 +21,18 @@ while [[ RET -ne 0 ]]; do
     RET=$?
 done
 
+sleep 5
+
 echo "=> Creating an admin user with a ${_word} password in MongoDB"
-mongo admin --eval "db.addUser({ user: 'admin', pwd: '$ADMINPASS', roles: [ { role: 'root', db: 'admin' }, { role: 'userAdminAnyDatabase', db: 'admin }, { role: 'dbAdminAnyDatabase', db: 'admin' } ] });"
+mongo admin --eval "db.createUser({ user: 'admin', pwd: '$ADMINPASS', roles: [ { role: 'root', db: 'admin' }, { role: 'userAdminAnyDatabase', db: 'admin }, { role: 'dbAdminAnyDatabase', db: 'admin' } ] });"
+sleep 4
 
 echo "=> Creating an regular user with a ${_word2} password in MongoDB"
-mongo admin --eval "db.addUser({ user: 'user', pwd: '$USERPASS', roles: [ { role: 'readWriteAnyDatabase', db: 'admin' } ] });"
+mongo admin --eval "db.createUser({ user: 'user', pwd: '$USERPASS', roles: [ { role: 'readWriteAnyDatabase', db: 'admin' } ] });"
+sleep 4
 
 mongo admin --eval "db.shutdownServer();"
+sleep 2
 
 echo "=> Done!"
 touch /.mongodb_password_set
